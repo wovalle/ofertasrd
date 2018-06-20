@@ -1,20 +1,23 @@
 import IParser from './IParser';
 import Deal from '../Models/Deal';
-import * as cheerio from 'cheerio';
 
 // TODO: classify by categories. Probably will have to make n requests
-
 export default class ViagrupoParser implements IParser {
+  private cheerio: any;
+
+  constructor(cheerio) {
+    this.cheerio = cheerio;
+  }
   isApplicable(url: string) {
     return /viagrupo.com/.test(url);
   }
 
   parse(htmlBody: string): Deal[] {
-    const $ = cheerio.load(htmlBody);
+    const $ = this.cheerio.load(htmlBody);
     const domList = $('.alld_deal');
 
     return domList.get().map(e => {
-      const $e = cheerio(e);
+      const $e = this.cheerio(e);
       const header = $e.find('.alldeal_content .noir');
       const description = $e.find('.alld_desc h3').text();
       const details = $e.find('.alld_details');
