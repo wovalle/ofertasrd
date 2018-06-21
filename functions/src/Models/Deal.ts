@@ -1,8 +1,19 @@
+export const enum DealProvider {
+  Viagrupo = 1,
+}
+
 export default class Deal {
+  provider: DealProvider;
+  id: string;
+  slug: string;
   title: string;
   description: string;
-  url: string;
   price: Number;
   originalPrice: Number;
   endDate: Date;
+  tag?: string;
+
+  get url() {
+    return `http://viagrupo.com${this.id}`;
+  }
 }

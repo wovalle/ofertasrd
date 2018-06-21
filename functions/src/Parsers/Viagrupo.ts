@@ -5,9 +5,10 @@ import Deal from '../Models/Deal';
 export default class ViagrupoParser implements IParser {
   private cheerio: any;
 
-  constructor(cheerio) {
+  constructor(cheerio: any) {
     this.cheerio = cheerio;
   }
+
   isApplicable(url: string) {
     return /viagrupo.com/.test(url);
   }
@@ -16,13 +17,11 @@ export default class ViagrupoParser implements IParser {
     const $ = this.cheerio.load(htmlBody);
     const domList = $('.alld_deal');
 
-    return domList.get().map(e => {
+    return domList.get().map((e: any) => {
       const $e = this.cheerio(e);
       const header = $e.find('.alldeal_content .noir');
       const description = $e.find('.alld_desc h3').text();
       const details = $e.find('.alld_details');
-
-      const url = `http://viagrupo.com${header.attr('href')}`;
 
       const priceText = details
         .find('.alld_v')
@@ -41,17 +40,23 @@ export default class ViagrupoParser implements IParser {
         .slice(-1)[0]
         .replace('RD$', '');
 
-      //TODO: parse date
       const dateString = details.find('.small_details script').html();
+      const dateRegex = dateString.match(
+        /\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}/i
+      );
+      const date = dateRegex.length ? new Date(dateRegex[0]) : null;
+
+      const slug = header.attr('href');
 
       return {
         title: header.text().trim(),
-        url,
+        id: slug.split('/').slice(-1)[0],
+        slug,
         description,
         price: Number(priceText),
         originalPrice: Number(priceText) + Number(originalPriceText),
-        endDate: new Date(),
-        requestDate: new Date(),
+        endDate: date ? date.getTime() : date,
+        requestDate: new Date().getTime(),
       };
     });
   }
