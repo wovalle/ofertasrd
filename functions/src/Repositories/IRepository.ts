@@ -1,4 +1,4 @@
-export default interface IRepository<T> {
+export default interface IRepository<T extends { id: string }> {
   get(id: string): Promise<T>;
   getAll(): Promise<T[]>;
   save(entity: T): Promise<void>;
