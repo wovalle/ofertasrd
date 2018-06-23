@@ -7,7 +7,7 @@ import initializeRoutes from './routes';
 
 admin.initializeApp(functions.config().firebase);
 
-const db = admin.database();
+const db = admin.firestore();
 const dealRepository = new DealRepository(db);
 
 export const routes = initializeRoutes(http, dealRepository);

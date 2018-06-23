@@ -18,4 +18,8 @@ export default (http: IHttp, dealRepository: IRepository<Deal>) => ({
 
     res.send(deals);
   }),
+  onDealCreate: functions.firestore.document('').onCreate(snapshot => {
+    const data = snapshot.data();
+    console.log('TODO: emit notifications for document ', data);
+  }),
 });

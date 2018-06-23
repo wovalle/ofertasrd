@@ -6,7 +6,8 @@
     "outDir": "lib",
     "sourceMap": true,
     "target": "es6",
-    "strict": true
+    "strict": true,
+    "strictPropertyInitialization": false
   },
   "compileOnSave": true,
   "include": ["src"]

@@ -44,8 +44,7 @@ export default class ViagrupoParser implements IParser {
       const dateRegex = dateString.match(
         /\d{2}\/\d{2}\/\d{4} \d{2}:\d{2}:\d{2}/i
       );
-      const date = dateRegex.length ? new Date(dateRegex[0]) : null;
-
+      const endDate = dateRegex.length ? new Date(dateRegex[0]) : null;
       const slug = header.attr('href');
 
       return {
@@ -55,8 +54,8 @@ export default class ViagrupoParser implements IParser {
         description,
         price: Number(priceText),
         originalPrice: Number(priceText) + Number(originalPriceText),
-        endDate: date ? date.getTime() : date,
-        requestDate: new Date().getTime(),
+        endDate,
+        requestDate: new Date(),
       };
     });
   }
