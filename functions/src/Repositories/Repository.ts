@@ -4,10 +4,7 @@ import { asyncForEach } from '../utils';
 
 export default abstract class FirestoreRepository<T extends { id: string }>
   implements IRepository<T> {
-  private db: firestore.Firestore;
-  private collection: string;
-
-  constructor(db: firestore.Firestore, collection: string) {
+  constructor(protected db: firestore.Firestore, protected collection: string) {
     this.db = db;
     this.collection = collection;
   }
@@ -17,13 +14,17 @@ export default abstract class FirestoreRepository<T extends { id: string }>
       .collection(this.collection)
       .doc(id)
       .get()
-      .then(d => (d as any) as T);
+      .then(d => d.data() as T);
   }
 
   // TODO: Add Pagination
   async getAll(): Promise<T[]> {
-    const docs = await this.db.collection(this.collection).get();
-    return Object.values(docs);
+    const snapshot = await this.db.collection(this.collection).get();
+    return snapshot.docs.map(d => d.data() as T);
+  }
+
+  async add(entity: T): Promise<void> {
+    await this.db.collection(this.collection).add(entity);
   }
 
   async save(entity: T): Promise<void> {
