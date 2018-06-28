@@ -17,7 +17,7 @@
     "firebase-admin": "~5.12.1",
     "firebase-functions": "^1.0.3",
     "node-telegram-bot-api": "^0.30.0",
-    "uuid": "^3.2.1"
+    "uuid": "^3.3.0"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.8",
