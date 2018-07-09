@@ -1,8 +1,8 @@
-import * as functions from 'firebase-functions';
 import http from 'axios';
+import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import * as TelegramBot from 'node-telegram-bot-api';
 
+import TelegramService from './Services/TelegramService';
 import DealRepository from './Repositories/DealRepository';
 import UserRepository from './Repositories/UserRepository';
 import initializeRoutes from './routes';
@@ -10,14 +10,15 @@ import initializeRoutes from './routes';
 admin.initializeApp(functions.config().firebase);
 
 const db = admin.firestore();
-const telegramBot = new TelegramBot(functions.config().telegram.key);
 
 const dealRepository = new DealRepository(db);
 const userRepository = new UserRepository(db);
 
+const telegramService = new TelegramService(functions.config().telegram.key);
+
 export const routes = initializeRoutes(
   http,
-  telegramBot,
+  telegramService,
   dealRepository,
   userRepository
 );
