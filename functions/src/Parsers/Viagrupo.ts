@@ -47,6 +47,7 @@ export default class ViagrupoParser implements IParser {
       const endDate = dateRegex.length ? new Date(dateRegex[0]) : null;
       const slug = header.attr('href');
 
+      // TODO: add static 'viagrupo' to Provider. Enum?
       return {
         title: header.text().trim(),
         id: slug.split('/').slice(-1)[0],

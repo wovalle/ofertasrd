@@ -1,8 +1,8 @@
 import { firestore } from 'firebase-admin';
-import Repository from './Repository';
+import FirebaseRepository from './FirebaseRepository';
 import User from '../Models/User';
 
-export default class UserRepository extends Repository<User> {
+export default class UserRepository extends FirebaseRepository<User> {
   constructor(db: firestore.Firestore) {
     super(db, 'users');
   }

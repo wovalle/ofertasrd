@@ -67,6 +67,29 @@ export default (
           message.from!.id,
           Resources.en.telegram.afterStart
         );
+        break;
+      }
+
+      case TelegramService.Commands.deals: {
+        const user = await userRepository.byTelegramId(message.from!.id);
+
+        if (!user) {
+          await telegramService.sendMessage(
+            message.from!.id,
+            Resources.en.telegram.invalidUser
+          );
+          break;
+        }
+
+        const deals = await dealRepository.getAll(3);
+        const dealsMessage = deals
+          .map(Resources.en.telegram.dealToText)
+          .join('\n\n');
+
+        await telegramService.sendMessage(message.from!.id, dealsMessage, {
+          parse_mode: 'Markdown',
+        });
+        break;
       }
 
       default:

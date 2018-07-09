@@ -16,6 +16,7 @@ const userRepository = new UserRepository(db);
 
 const telegramService = new TelegramService(functions.config().telegram.key);
 
+// TODO: initialize individuals routes depending on the url?
 export const routes = initializeRoutes(
   http,
   telegramService,

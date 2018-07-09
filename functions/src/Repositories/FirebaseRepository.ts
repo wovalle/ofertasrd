@@ -20,8 +20,8 @@ export default abstract class FirestoreRepository<T extends { id: string }>
   async getAll(limit: number = 20, page: number = 0): Promise<T[]> {
     const snapshot = await this.db
       .collection(this.collection)
-      .startAfter(page * limit)
       .limit(limit)
+      .orderBy('endDate', 'desc') // TODO: This shouldn't be hardcoded
       .get();
     return snapshot.docs.map(d => d.data() as T);
   }
