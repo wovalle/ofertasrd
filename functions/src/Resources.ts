@@ -5,6 +5,7 @@ export default {
         "Thank you for using ofertasrd bot. You'll now receive all the great offers in Dominican Republic.",
       invalidCommand: 'Invalid Command',
       invalidUser: 'Invalid User',
+      emptyDeals: 'Sorry, right now there is no deals available.',
       // TODO: refactor into a presenter (ViagrupoDealPresenter -> IDealPresenter)
       dealToText: (deal: any): string => {
         const savings = 100 - (deal.price / deal.originalPrice) * 100;

@@ -45,7 +45,7 @@ export default (
 
       await asyncForEach(users, async (user: User) => {
         await telegramService.sendMessage(
-          +user.telegramId,
+          user.telegramId,
           `New Deal: ${deal.url}`
         );
       });
@@ -84,10 +84,14 @@ export default (
           break;
         }
 
-        const deals = await dealRepository.getAll(3);
-        const dealsMessage = deals
+        const deals = await dealRepository.getActive(3);
+        let dealsMessage = deals
           .map(Resources.en.telegram.dealToText)
           .join('\n\n');
+
+        if (!deals.length) {
+          dealsMessage = Resources.en.telegram.emptyDeals;
+        }
 
         await telegramService.sendMessage(message.from!.id, dealsMessage, {
           parse_mode: 'Markdown',

@@ -15,10 +15,10 @@ export default class TelegramService {
   }
 
   sendMessage(
-    chatId: number,
+    chatId: number | Number,
     message: string,
     options?: TelegramBot.SendMessageOptions
   ) {
-    this.bot.sendMessage(chatId, message, options);
+    this.bot.sendMessage(+chatId, message, options);
   }
 }
