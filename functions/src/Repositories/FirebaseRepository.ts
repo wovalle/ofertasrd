@@ -21,7 +21,6 @@ export default abstract class FirestoreRepository<T extends { id: string }>
     const snapshot = await this.db
       .collection(this.collection)
       .limit(limit)
-      .orderBy('endDate', 'desc') // TODO: This shouldn't be hardcoded
       .get();
     return snapshot.docs.map(d => d.data() as T);
   }
