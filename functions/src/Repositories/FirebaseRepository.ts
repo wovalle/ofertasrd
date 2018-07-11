@@ -17,9 +17,11 @@ export default abstract class FirestoreRepository<T extends { id: string }>
       .then(d => d.data() as T);
   }
 
-  // TODO: Add Pagination
-  async getAll(): Promise<T[]> {
-    const snapshot = await this.db.collection(this.collection).get();
+  async getAll(limit: number = 20, page: number = 0): Promise<T[]> {
+    const snapshot = await this.db
+      .collection(this.collection)
+      .limit(limit)
+      .get();
     return snapshot.docs.map(d => d.data() as T);
   }
 
