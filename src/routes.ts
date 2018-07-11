@@ -26,7 +26,9 @@ export default (
   viagrupo: functions.https.onRequest(async (req, res) => {
     const html = await http.get('http://www.viagrupo.com/santo-domingo/active');
     console.info('HANDLER: html downloaded, starting parser');
-    const viagrupoParser = new ViagrupoParser(cheerio);
+    const viagrupoParser = new ViagrupoParser(cheerio, {
+      getCurrent: () => new Date(),
+    });
 
     const deals = viagrupoParser.parse(html.data);
 
