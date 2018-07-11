@@ -11,7 +11,6 @@ export default class Deal {
   price: Number;
   originalPrice: Number;
   endDate: Date;
-  tag?: string;
 
   get url() {
     return `http://viagrupo.com${this.id}`;

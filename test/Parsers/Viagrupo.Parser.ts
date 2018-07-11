@@ -27,11 +27,10 @@ describe('Viagrupo Handler', () => {
         endDate: new Date('2018-07-17T04:00:00.000Z'),
         requestDate,
         url: '',
-        tag: '',
       };
 
       assert.equal(deals.length, 4);
-      assert.deepEqual(firstDeal, { ...deals[0], url: '', tag: '' });
+      assert.deepEqual(firstDeal, { ...deals[0], url: '' });
     });
   });
 });
