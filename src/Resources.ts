@@ -1,3 +1,5 @@
+import Deal from './Models/Deal';
+
 export default {
   en: {
     telegram: {
@@ -7,11 +9,10 @@ export default {
       invalidUser: 'Invalid User',
       emptyDeals: 'Sorry, right now there is no deals available.',
       // TODO: refactor into a presenter (ViagrupoDealPresenter -> IDealPresenter)
-      dealToText: (deal: any): string => {
+      dealToText: (deal: Deal): string => {
         const savings = 100 - (deal.price / deal.originalPrice) * 100;
-        const link = `http://viagrupo.com${deal.slug}`;
         return [
-          `[${deal.title}](${link})`,
+          `[${deal.title}](${deal.url})`,
           `*Price:* ${deal.price} (from ${deal.originalPrice})`,
           `*Savings:* *${savings.toFixed(2)}%*`,
           `*Valid until:* ${deal.endDate}`,

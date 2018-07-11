@@ -8,8 +8,8 @@ export default class Deal {
   slug: string;
   title: string;
   description: string;
-  price: Number;
-  originalPrice: Number;
+  price: number;
+  originalPrice: number;
   endDate: Date;
 
   get url() {
