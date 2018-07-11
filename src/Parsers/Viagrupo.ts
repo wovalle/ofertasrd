@@ -1,11 +1,10 @@
 import IParser from './IParser';
-import Deal from '../Models/Deal';
+import Deal, { DealProvider } from '../Models/Deal';
+import ITime from '../ITime';
 
 // TODO: classify by categories. Probably will have to make n requests
 export default class ViagrupoParser implements IParser {
-  private cheerio: any;
-
-  constructor(cheerio: any) {
+  constructor(private cheerio: any, private iTime: ITime) {
     this.cheerio = cheerio;
   }
 
@@ -50,6 +49,7 @@ export default class ViagrupoParser implements IParser {
 
       // TODO: add static 'viagrupo' to Provider. Enum?
       return {
+        provider: DealProvider.Viagrupo,
         title: header.text().trim(),
         id: slug.split('/').slice(-1)[0],
         slug,
@@ -57,7 +57,7 @@ export default class ViagrupoParser implements IParser {
         price: Number(priceText),
         originalPrice: Number(priceText) + Number(originalPriceText),
         endDate,
-        requestDate: new Date(),
+        requestDate: this.iTime.getCurrent(),
       };
     });
   }
