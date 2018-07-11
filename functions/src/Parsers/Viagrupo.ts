@@ -16,6 +16,7 @@ export default class ViagrupoParser implements IParser {
   parse(htmlBody: string): Deal[] {
     const $ = this.cheerio.load(htmlBody);
     const domList = $('.alld_deal');
+    console.info(`PARSER: got ${domList.length} deals parsing started`);
 
     return domList.get().map((e: any) => {
       const $e = this.cheerio(e);

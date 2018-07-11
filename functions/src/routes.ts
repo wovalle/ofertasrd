@@ -25,12 +25,15 @@ export default (
 ) => ({
   viagrupo: functions.https.onRequest(async (req, res) => {
     const html = await http.get('http://www.viagrupo.com/santo-domingo/active');
+    console.info('HANDLER: html downloaded, starting parser');
     const viagrupoParser = new ViagrupoParser(cheerio);
 
     const deals = viagrupoParser.parse(html.data);
 
+    console.info('HANDLER: html parsed saving to db');
     await dealRepository.saveAll(deals);
-    res.send(deals);
+
+    res.send('OK');
   }),
   onDealCreate: functions.firestore
     .document('deals')
