@@ -16,14 +16,15 @@ import TelegramService from './Services/TelegramService';
 import { asyncForEach } from './utils';
 import Resources from './Resources';
 
-// Foreach parser, make an async call. Call parser.isApplicable afterwards.
-export default (
+/* 
+  TODO: Foreach parser, make an async call.
+  Call parser.isApplicable afterwards.
+*/
+const ViagrupoControllerFactory = (
   http: IHttp,
-  telegramService: TelegramService,
-  dealRepository: DealRepository,
-  userRepository: UserRepository
+  dealRepository: DealRepository
 ) => ({
-  viagrupo: functions.https.onRequest(async (req, res) => {
+  parseDeals: async () => {
     const html = await http.get('http://www.viagrupo.com/santo-domingo/active');
     console.info('HANDLER: html downloaded, starting parser');
     const viagrupoParser = new ViagrupoParser(cheerio, {
@@ -41,17 +42,16 @@ export default (
     const remainingDeals = parsedDeals.filter(d => !dealIsSaved(d));
     console.info(`Saving ${remainingDeals.length} new deals`);
 
-    await dealRepository.saveAll(remainingDeals);
-    /*
-      TODO: find matching users and notify the deals saved,
-      calling another function maybe?
-    */
-    res.send('OK');
-  }),
-  onTelegramMessage: functions.https.onRequest(async (req, res) => {
-    const { message }: { message: TelegramBot.Message } = req.body;
-    console.log('Got Message: ', message.text, message.date);
+    return dealRepository.saveAll(remainingDeals);
+  },
+});
 
+const TelegramControllerFactory = (
+  dealRepository: DealRepository,
+  userRepository: UserRepository,
+  telegramService: TelegramService
+) => ({
+  onMessage: async (message: TelegramBot.Message) => {
     switch (message.text) {
       case TelegramService.Commands.start: {
         const user = await userRepository.byTelegramId(message.from!.id);
@@ -103,6 +103,35 @@ export default (
           Resources.en.telegram.invalidCommand
         );
     }
+  },
+});
+
+export default (
+  http: IHttp,
+  telegramService: TelegramService,
+  dealRepository: DealRepository,
+  userRepository: UserRepository
+) => ({
+  viagrupo: functions.https.onRequest(async (_, res) => {
+    const viagrupoController = ViagrupoControllerFactory(http, dealRepository);
+    await viagrupoController.parseDeals();
+    /*
+      TODO: find matching users and notify the deals saved,
+      calling another function maybe?
+    */
+    return res.send('OK');
+  }),
+  onTelegramMessage: functions.https.onRequest(async (req, res) => {
+    const { message }: { message: TelegramBot.Message } = req.body;
+    console.log('Got Message: ', message.text, message.date);
+
+    const telegramController = TelegramControllerFactory(
+      dealRepository,
+      userRepository,
+      telegramService
+    );
+
+    await telegramController.onMessage(message);
     // TODO: proper error handling
     res.status(200).send();
   }),
