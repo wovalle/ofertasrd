@@ -42,23 +42,12 @@ export default (
     console.info(`Saving ${remainingDeals.length} new deals`);
 
     await dealRepository.saveAll(remainingDeals);
+    /*
+      TODO: find matching users and notify the deals saved,
+      calling another function maybe?
+    */
     res.send('OK');
   }),
-  onDealCreate: functions.firestore
-    .document('deals')
-    .onCreate(async snapshot => {
-      const deal = snapshot.data() as Deal;
-      console.log('TODO: Emit notifications for document ', deal);
-
-      const users = await userRepository.getAll();
-
-      await asyncForEach(users, async (user: User) => {
-        await telegramService.sendMessage(
-          user.telegramId,
-          `New Deal: ${deal.url}`
-        );
-      });
-    }),
   onTelegramMessage: functions.https.onRequest(async (req, res) => {
     const { message }: { message: TelegramBot.Message } = req.body;
     console.log('Got Message: ', message.text, message.date);
