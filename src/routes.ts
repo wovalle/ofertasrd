@@ -6,10 +6,9 @@ import IHttp from './IHttp';
 import ViagrupoControllerFactory from './Controllers/ViagrupoController';
 import TelegramControllerFactory from './Controllers/TelegramController';
 
-import DealRepository from './Repositories/DealRepository';
-import UserRepository from './Repositories/UserRepository';
-
-import TelegramService from './Services/TelegramService';
+import ITelegramService from './Services/ITelegramService';
+import IDealRepository from './Repositories/IDealRepository';
+import IUserRepository from './Repositories/IUserRepository';
 /* 
   TODO: Foreach parser, make an async call.
   Call parser.isApplicable afterwards.
@@ -17,9 +16,9 @@ import TelegramService from './Services/TelegramService';
 
 export default (
   http: IHttp,
-  telegramService: TelegramService,
-  dealRepository: DealRepository,
-  userRepository: UserRepository
+  telegramService: ITelegramService,
+  dealRepository: IDealRepository,
+  userRepository: IUserRepository
 ) => ({
   viagrupo: functions.https.onRequest(async (_, res) => {
     const viagrupoController = ViagrupoControllerFactory(http, dealRepository);

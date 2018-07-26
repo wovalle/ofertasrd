@@ -1,8 +1,10 @@
 import { firestore } from 'firebase-admin';
 import FirebaseRepository from './FirebaseRepository';
 import Deal from '../Models/Deal';
+import IDealRepository from './IDealRepository';
 
-export default class DealRepository extends FirebaseRepository<Deal> {
+export default class DealRepository extends FirebaseRepository<Deal>
+  implements IDealRepository {
   constructor(db: firestore.Firestore) {
     super(db, 'deals');
   }

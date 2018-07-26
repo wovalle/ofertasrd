@@ -1,9 +1,11 @@
-import IHttp from '../IHttp';
-import DealRepository from '../Repositories/DealRepository';
-import ViagrupoParser from '../Parsers/Viagrupo';
-import Deal from '../Models/Deal';
+import * as cheerio from 'cheerio';
 
-export default (http: IHttp, dealRepository: DealRepository) => ({
+import IHttp from '../IHttp';
+import Deal from '../Models/Deal';
+import ViagrupoParser from '../Parsers/Viagrupo';
+import IDealRepository from '../Repositories/IDealRepository';
+
+export default (http: IHttp, dealRepository: IDealRepository) => ({
   parseDeals: async () => {
     const html = await http.get('http://www.viagrupo.com/santo-domingo/active');
     console.info('HANDLER: html downloaded, starting parser');

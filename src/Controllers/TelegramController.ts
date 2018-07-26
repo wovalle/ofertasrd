@@ -1,19 +1,20 @@
 import { Message } from 'node-telegram-bot-api';
 import { v4 } from 'uuid';
 
-import DealRepository from '../Repositories/DealRepository';
-import UserRepository from '../Repositories/UserRepository';
-import TelegramService from '../Services/TelegramService';
+import ITelegramService from '../Services/ITelegramService';
+import IDealRepository from '../Repositories/IDealRepository';
+import IUserRepository from '../Repositories/IUserRepository';
 import Resources from '../Resources';
+import { TelegramCommands } from '../Enums/TelegramCommand';
 
 export default (
-  dealRepository: DealRepository,
-  userRepository: UserRepository,
-  telegramService: TelegramService
+  dealRepository: IDealRepository,
+  userRepository: IUserRepository,
+  telegramService: ITelegramService
 ) => ({
   onMessage: async (message: Message) => {
     switch (message.text) {
-      case TelegramService.Commands.start: {
+      case TelegramCommands.start: {
         const user = await userRepository.byTelegramId(message.from!.id);
 
         if (!user) {
@@ -31,7 +32,7 @@ export default (
         break;
       }
 
-      case TelegramService.Commands.deals: {
+      case TelegramCommands.deals: {
         const user = await userRepository.byTelegramId(message.from!.id);
 
         if (!user) {
