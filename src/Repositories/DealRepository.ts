@@ -17,4 +17,15 @@ export default class DealRepository extends FirebaseRepository<Deal> {
 
     return snapshot.docs.map(d => d.data() as Deal);
   }
+
+  async getAllActiveIds(): Promise<string[]> {
+    const snapshot = await this.db
+      .collection(this.collection)
+      .where('endDate', '>=', new Date())
+      .orderBy('endDate', 'desc')
+      .select('id')
+      .get();
+
+    return snapshot.docs.map(d => d.data().id as string);
+  }
 }

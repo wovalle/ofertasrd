@@ -30,11 +30,18 @@ export default (
       getCurrent: () => new Date(),
     });
 
-    const deals = viagrupoParser.parse(html.data);
+    const parsedDeals = viagrupoParser.parse(html.data);
+    console.info(
+      `HANDLER: html downloaded. Deals parsed: ${parsedDeals.length}.`
+    );
 
-    console.info('HANDLER: html parsed saving to db');
-    await dealRepository.saveAll(deals);
+    const activeDealsIds = await dealRepository.getAllActiveIds();
+    const dealIsSaved = (deal: Deal) => activeDealsIds.some(d => d === deal.id);
 
+    const remainingDeals = parsedDeals.filter(d => !dealIsSaved(d));
+    console.info(`Saving ${remainingDeals.length} new deals`);
+
+    await dealRepository.saveAll(remainingDeals);
     res.send('OK');
   }),
   onDealCreate: functions.firestore
