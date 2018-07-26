@@ -4,9 +4,7 @@ import ITime from '../ITime';
 
 // TODO: classify by categories. Probably will have to make n requests
 export default class ViagrupoParser implements IParser {
-  constructor(private cheerio: any, private iTime: ITime) {
-    this.cheerio = cheerio;
-  }
+  constructor(private cheerio: any, private iTime: ITime) {}
 
   isApplicable(url: string) {
     return /viagrupo.com/.test(url);

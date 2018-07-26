@@ -1,13 +1,8 @@
 import * as TelegramBot from 'node-telegram-bot-api';
-
-enum Commands {
-  start = '/start',
-  deals = '/deals',
-}
+import ITelegramService from './ITelegramService';
 
 // TODO: implement IMessaging and wrap sendMessage options to provide universal support
-export default class TelegramService {
-  public static Commands = Commands;
+export default class TelegramService implements ITelegramService {
   private bot: TelegramBot;
 
   constructor(private key: string) {

@@ -8,9 +8,9 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "tunnel": "ngrok http 5000",
     "test": "mocha --require ts-node/register ./test/**/*.ts",
-    "testw": "mocha --require ts-node/register -w --watch-extensions ts ./test/**/*.ts"
+    "testw": "mocha --require ts-node/register -w --watch-extensions ts ./test/**/*.ts",
+    "tunnel": "ts-node src/setup.ts"
   },
   "main": "src/index.js",
   "dependencies": {
