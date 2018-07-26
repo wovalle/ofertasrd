@@ -6,3 +6,4 @@ functions/lib
 *.log
 
 .runtimeconfig.json
+functions

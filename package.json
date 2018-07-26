@@ -1,0 +1,39 @@
+{
+  "name": "ofertasrd",
+  "scripts": {
+    "lint": "tslint --project tsconfig.json",
+    "build:firebase": "tsc --outDir functions/lib",
+    "serve": "npm run build:firebase && firebase serve --only functions",
+    "shell": "npm run build:firebase && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log",
+    "tunnel": "ngrok http 5000",
+    "test": "mocha --require ts-node/register ./test/**/*.ts",
+    "testw": "mocha --require ts-node/register -w --watch-extensions ts ./test/**/*.ts"
+  },
+  "main": "src/index.js",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
+    "firebase-admin": "~5.12.1",
+    "firebase-functions": "^2.0.0",
+    "node-telegram-bot-api": "^0.30.0",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.4",
+    "@types/cheerio": "^0.22.8",
+    "@types/mocha": "^5.2.4",
+    "@types/node-telegram-bot-api": "^0.30.1",
+    "@types/uuid": "^3.4.3",
+    "chai": "^4.1.2",
+    "firebase-tools": "^4.0.0",
+    "mocha": "^5.2.0",
+    "ngrok": "^3.0.1",
+    "ts-node": "^7.0.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.9.2"
+  },
+  "private": true
+}
