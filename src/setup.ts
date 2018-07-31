@@ -17,4 +17,4 @@ async function init() {
   console.log('ready');
 }
 
-init();
+init().catch(err => `Error on setup: ${err.message}`);

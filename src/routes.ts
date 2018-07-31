@@ -46,10 +46,8 @@ export default (
       const users = await userRepository.getAll();
 
       await asyncForEach(users, async (user: User) => {
-        await telegramService.sendMessage(
-          user.telegramId,
-          `New Deal: ${deal.url}`
-        );
+        const message = `New Deal: ${deal.url}`;
+        await telegramService.sendMessage(user.telegramId, message);
       });
     }),
   onTelegramMessage: functions.https.onRequest(async (req, res) => {
@@ -102,7 +100,7 @@ export default (
       }
 
       default:
-        telegramService.sendMessage(
+        await telegramService.sendMessage(
           message.from!.id,
           Resources.en.telegram.invalidCommand
         );

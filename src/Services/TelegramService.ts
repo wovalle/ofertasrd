@@ -11,14 +11,14 @@ export default class TelegramService {
   private bot: TelegramBot;
 
   constructor(private key: string) {
-    this.bot = new TelegramBot(key);
+    this.bot = new TelegramBot(this.key);
   }
 
-  sendMessage(
+  async sendMessage(
     chatId: number | Number,
     message: string,
     options?: TelegramBot.SendMessageOptions
   ) {
-    this.bot.sendMessage(+chatId, message, options);
+    await this.bot.sendMessage(+chatId, message, options);
   }
 }
